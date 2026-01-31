@@ -63,6 +63,10 @@ In alternativa consultare: https://learn.microsoft.com/it-it/windows/wsl/basic-c
     wsl --update               # aggiorna il componente WSL
     wsl --set-default-version 2    # imposta WSL versione 2 come predefinita
     wsl --set-default <nome>   # imposta la distribuzione di default
+    wsl --status # controlla configurazione e stato kernel wsl
+    wsl --list --online # mostra elenco distro disponibili per scarimento e installazione
+    wsl --terminate <distro-name> # spegne la distro wsl, utile se un processo docker si impalla
+    
 
 Suggerimento: eseguite i comandi da PowerShell con privilegi normali; per operazioni di rete o installazione di pacchetti dentro la distro utilizzate il terminale della distro (es. `wsl -d Ubuntu-24.04` o aprite la distro da Start).
 
