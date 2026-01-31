@@ -2,6 +2,8 @@
 
 Se non sapete proprio nulla, iniziate da qui: https://learn.microsoft.com/it-it/windows/wsl/install
 
+Passi dell'installazione manuale: https://learn.microsoft.com/it-it/windows/wsl/install-manual
+
 ## Sommario
 - [Premessa](#premessa)
 - [Licenza Docker Desktop](#licenza-docker-desktop)
