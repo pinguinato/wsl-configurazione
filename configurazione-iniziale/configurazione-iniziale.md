@@ -76,3 +76,82 @@ Suggerimento: eseguite i comandi da PowerShell con privilegi normali; per operaz
 - Controllate le policy aziendali prima di usare Docker Desktop in progetti non personali.
 
 ---
+
+## Disinstallare Docker Desktop
+
+Se volete usare WSL in modo "puro" (ossia gestire container e strumenti direttamente dentro la distro), conviene rimuovere Docker Desktop e pulire i residui. Di seguito una procedura ordinata e sicura.
+
+1. Aggiornare WSL:
+   ```bash
+   wsl --update
+   ```
+2. Arrestare tutte le istanze WSL (applicare eventuali modifiche a `.wslconfig`):
+   ```bash
+   wsl --shutdown
+   ```
+3. Disinstallare Docker Desktop tramite **Impostazioni > App > App installate** (o Pannello di controllo). Assicuratevi che l'app sia completamente chiusa prima di procedere.
+4. Verificare la rimozione delle VM/distro correlate. Se sono ancora presenti, rimuoverle manualmente:
+   ```bash
+   wsl --list --verbose
+   wsl --unregister docker-desktop
+   wsl --unregister docker-desktop-data
+   ```
+   Nota: i comandi `wsl --unregister` cancellano la distro/VM indicata.
+5. Pulire le cartelle residue su Windows (eseguire PowerShell come amministratore). Usate i comandi seguenti con cautela: rimuovono file e directory che Docker Desktop lascia sul sistema.
+
+```powershell
+# Eseguire da PowerShell come amministratore
+Remove-Item -Recurse -Force "$env:ProgramData\Docker" -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force "$env:ProgramFiles\Docker" -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force "$env:LOCALAPPDATA\Docker" -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force "$env:APPDATA\Docker" -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force "$env:USERPROFILE\.docker" -ErrorAction SilentlyContinue
+```
+
+6. Verifiche finali:
+   ```bash
+   # Se avete ancora il client Docker installato
+   docker context ls || echo "docker CLI non disponibile"
+   wsl --list --verbose
+   ```
+
+Note e precauzioni:
+- Eseguite i comandi PowerShell come amministratore. Fate un backup delle directory importanti prima di cancellare.
+- Alcuni file di configurazione potrebbero trovarsi in percorsi diversi a seconda della versione o della personalizzazione dell'installazione: verificate prima di cancellare.
+- Per `Rancher Desktop` vale lo stesso approccio: disinstallare l'app e rimuovere eventuali VM/directory residue per evitare conflitti.
+- Dopo la pulizia è consigliato riavviare Windows per assicurarsi che non ci siano servizi in memoria.
+
+---
+
+## Installazione della distro `Ubuntu-24.04`
+
+Per installare Ubuntu 24.04 in WSL ed usare un ambiente Linux completo:
+
+1. Eseguire (da PowerShell o da una shell con privilegi normali):
+
+```powershell
+wsl --install -d Ubuntu-24.04
+```
+
+2. Al primo avvio configurare nome utente e password quando richiesto.
+
+3. Operazioni consigliate dopo l'installazione:
+   - Impostare WSL 2 come versione predefinita (se non già fatto):
+     ```powershell
+     wsl --set-default-version 2
+     ```
+   - Impostare la distro installata come predefinita (opzionale):
+     ```powershell
+     wsl --set-default Ubuntu-24.04
+     ```
+   - Verificare lo stato delle distro:
+     ```bash
+     wsl --list --verbose
+     ```
+
+4. Se avete modificato `C:\Users\<utente>\.wslconfig`, ricordate di eseguire `wsl --shutdown` per applicare le modifiche.
+
+Consigli pratici:
+- Aprite la distro direttamente (dal menu Start o con `wsl -d Ubuntu-24.04`) prima di installare tool complessi.
+- Installate Java, Maven, Python, Node, ecc. all'interno della distro per evitare problemi di permessi e path tra Windows e Linux.
+- Se prevedete di eseguire container direttamente nella distro, installate Docker Engine, Podman o containerd all'interno di `Ubuntu-24.04` seguendo la documentazione ufficiale.
