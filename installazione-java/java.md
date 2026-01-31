@@ -224,10 +224,3 @@ Note e suggerimenti:
     sudo apt remove --purge -y zulu*-jdk
     sudo apt autoremove -y
     ```
-
----
-
-Se vuoi, posso:
-- aggiungere istruzioni per installare più versioni del JDK e gestirle con `sdkman` o `update-alternatives`;
-- fornire una sezione su come configurare IntelliJ per usare il JDK della WSL passo-passo;
-- includere comandi per installare Gradle o altri build tool.
