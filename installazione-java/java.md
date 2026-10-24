@@ -77,7 +77,7 @@ Per impostare `JAVA_HOME` per l'utente corrente, aggiungete le seguenti righe al
 
 ```bash
 # aggiungere alla fine di ~/.bashrc
-export JAVA_HOME=/usr/lib/jvm/zulu21
+export JAVA_HOME="$(dirname "$(dirname "$(readlink -f "$(which java)")")")"
 export PATH="$JAVA_HOME/bin:$PATH"
 ```
 
@@ -89,26 +89,28 @@ source ~/.bashrc
 echo $JAVA_HOME
 ```
 
-Se preferite impostare `JAVA_HOME` a livello di sistema per tutti gli utenti, aggiungete la stessa variabile in `/etc/environment` (richiede sudo) e riavviate la sessione.
+Se preferite impostare `JAVA_HOME` a livello di sistema per tutti gli utenti, aggiungete una riga in `/etc/environment` (richiede sudo, senza `export`), usando il percorso reale del JDK, e riavviate la sessione:
+
+```text
+JAVA_HOME=/usr/lib/jvm/zulu21
+```
 
 ---
 
 ## Installazione Maven
 
-Installazione rapida tramite apt (versione disponibile nei repository Ubuntu):
+Il Maven di Ubuntu 24.04 è una versione datata. Per i progetti usate il wrapper incluso nel progetto (`mvnw`), che scarica la versione giusta:
 
 ```bash
-sudo apt update
-sudo apt install -y maven
+./mvnw -v
 ```
 
-Verifica:
+Se vi serve Maven di sistema o più versioni di JDK e Maven, usate SDKMAN!, seguendo la guida ufficiale su https://sdkman.io/install, poi:
 
 ```bash
+sdk install maven
 mvn -v
 ```
-
-Se avete bisogno di una versione specifica di Maven, valutate l'installazione manuale scaricando l'archivio ufficiale dal sito Apache Maven.
 
 ---
 
@@ -141,7 +143,7 @@ Se avete bisogno di una versione specifica di Maven, valutate l'installazione ma
 
 ### IntelliJ IDEA
 
-- Da IntelliJ (Windows) potete aprire progetti in WSL usando il percorso speciale `\\wsl$\Ubuntu-24.04\home\<utente>\progetti\mio-progetto`.
+- Da IntelliJ (Windows) potete aprire progetti in WSL usando il percorso speciale `\\wsl.localhost\Ubuntu-24.04\home\<utente>\progetti\mio-progetto`.
 - IntelliJ rileverà che il progetto risiede in WSL e potrà utilizzare il JDK/Maven presenti nella distro (potrebbe chiedere di configurare gli SDK corretti). In caso di lentezza preferite aprire il progetto direttamente dalla shell WSL usando VS Code o usare IntelliJ sul WSL (con supporto WSL integrato nelle versioni recenti).
 
 ---
@@ -153,13 +155,13 @@ Questa sezione mostra come configurare IntelliJ IDEA in esecuzione su Windows pe
 Prerequisiti:
 - IntelliJ IDEA installato su Windows (Community o Ultimate).
 - JDK e Maven installati nella WSL (vedi sezioni sopra).
-- Il progetto salvato nel filesystem di WSL (consigliato) oppure accessibile tramite `\\wsl$\`.
+- Il progetto salvato nel filesystem di WSL (consigliato) oppure accessibile tramite `\\wsl.localhost\`.
 
 Passaggi:
 
 1) Aprire il progetto in IntelliJ
 
-- Metodo consigliato: aprite il progetto direttamente dalla cartella WSL usando il percorso UNC di Windows, ad es.: `\\wsl$\Ubuntu-24.04\home\<utente>\progetti\mio-progetto` (File > Open...).
+- Metodo consigliato: aprite il progetto direttamente dalla cartella WSL usando il percorso UNC di Windows, ad es.: `\\wsl.localhost\Ubuntu-24.04\home\<utente>\progetti\mio-progetto` (File > Open...).
 - In alternativa potete aprire IntelliJ e usare "Open" puntando a quel percorso.
 
 2) Aggiungere il JDK della WSL come SDK di progetto
@@ -167,7 +169,7 @@ Passaggi:
 - Aprite `File > Project Structure...` (o premi Ctrl+Alt+Shift+S).
 - Nella sezione `SDKs` cliccate sul `+` per aggiungere un nuovo SDK.
   - Se la vostra versione di IntelliJ supporta l'opzione "Add SDK from WSL" sceglietela e selezionate la distro (es. `Ubuntu-24.04`) e il path del JDK (es. `/usr/lib/jvm/zulu21`).
-  - Se non è disponibile l'opzione WSL, selezionate "JDK" e navigate nel percorso Windows corrispondente al path della WSL via UNC: `\\wsl$\Ubuntu-24.04\usr\lib\jvm\zulu21`.
+  - Se non è disponibile l'opzione WSL, selezionate "JDK" e navigate nel percorso Windows corrispondente al path della WSL via UNC: `\\wsl.localhost\Ubuntu-24.04\usr\lib\jvm\zulu21`.
 - Dopo l'aggiunta, impostate questo SDK come `Project SDK` nella sezione `Project` (sempre dentro Project Structure).
 
 3) Configurare Maven per usare il Maven della WSL
@@ -175,7 +177,7 @@ Passaggi:
 - Aprite `File > Settings > Build, Execution, Deployment > Build Tools > Maven`.
 - Per la voce `Maven home directory` potete scegliere:
   - `Bundled` (se volete usare il Maven integrato in IntelliJ), oppure
-  - `...` (Browse) e puntare al Maven installato nella WSL via UNC: `\\wsl$\Ubuntu-24.04\usr\share\maven` (o al path corretto dove `maven` è installato nella distro).
+  - `...` (Browse) e puntare al Maven installato nella WSL via UNC: `\\wsl.localhost\Ubuntu-24.04\usr\share\maven` (o al path corretto dove `maven` è installato nella distro).
 - Nella sezione `Importing` impostate `JDK for importer` sullo stesso SDK appena configurato (così l'import userà il JDK WSL).
 
 4) Impostare il Terminale integrato per usare la shell WSL (consigliato)
@@ -208,7 +210,7 @@ Passaggi:
   Dovreste vedere le versioni installate nella WSL e il `JAVA_HOME` che punta al percorso WSL.
 
 Note e suggerimenti:
-- Se vedete lentezza o problemi di indexing, assicuratevi che il progetto si trovi sul filesystem di WSL (non su `C:\` montato). Lavorare su `\\wsl$\...` è consigliato.
+- Se vedete lentezza o problemi di indexing, assicuratevi che il progetto si trovi sul filesystem di WSL (non su `C:\` montato). Lavorare su `\\wsl.localhost\...` è consigliato.
 - Se l'IDE non riconosce il JDK o Maven via UNC, provate ad aggiornare IntelliJ all'ultima versione o ad usare l'opzione "Add SDK from WSL" se presente.
 - In alternativa, per una integrazione più completa, potete utilizzare JetBrains Gateway / IntelliJ WSL backend (se disponibile nella vostra versione) che esegue il backend dell'IDE nella WSL e fornisce esperienza nativa.
 

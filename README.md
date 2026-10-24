@@ -14,8 +14,6 @@ Capitoli:
 
 - Configurazione iniziale
 - Primo avvio e aggiornamento
-- Installazione e configurazione di neofetch, htop, git e systemd, docker, docker compose
+- Installazione e configurazione di fastfetch, htop, git e systemd, docker, docker compose
 - Ambiente di sviluppo Java: come aprire progetti su Visual Studio Code e IntelliJ IDEA
-- Ambiente di sviluppo Python (minimale)
-- Node.js e nvm
-- Varie ed eventuali
+- Risoluzione problemi: chiamare da WSL un server avviato su Windows (curl)

@@ -1,6 +1,6 @@
-# Installazione di Docker (nativo in WSL) e strumenti utili (neofetch, htop, git)
+# Installazione di Docker (nativo in WSL) e strumenti utili (fastfetch, htop, git)
 
-Questo documento descrive come installare Docker Engine all'interno di `Ubuntu-24.04` su WSL2 e alcuni strumenti utili per gestire la distro (neofetch, htop, git).
+Questo documento descrive come installare Docker Engine all'interno di `Ubuntu-24.04` su WSL2 e alcuni strumenti utili per gestire la distro (fastfetch, htop, git).
 
 Nota: questa guida presuppone che abbiate rimosso Docker Desktop/Rancher Desktop e che vogliate un'installazione "nativa" dentro la distro WSL. Se preferite usare ancora Docker Desktop, potete saltare la parte di installazione di Docker Engine.
 
@@ -32,10 +32,7 @@ Questi comandi creano la keyring directory e importano la chiave GPG ufficiale d
 ## 2) Aggiungere il repository ufficiale Docker
 
 ```bash
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
-  https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo \"$VERSION_CODENAME\") stable" \
-  | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
 
 Poi aggiornare l'indice dei pacchetti:
@@ -114,23 +111,30 @@ Se vedete il messaggio "Hello from Docker!", significa che l'installazione è an
 
 ---
 
-## Installare `neofetch`, `htop` e `git`
-
-È comodo installare alcuni strumenti leggeri per ispezionare rapidamente il sistema:
+## Installare `fastfetch`, `htop` e `git`
 
 ```bash
 sudo apt update
-sudo apt install -y neofetch htop git
+sudo apt install -y htop git
+apt-cache policy fastfetch
 ```
 
-- `neofetch` mostra informazioni di sistema all'avvio.
-- `htop` è un monitor di processi interattivo e usabile da terminale.
-- `git` è il sistema di controllo versione; probabilmente è già presente ma questa riga lo installa se manca.
+Se `fastfetch` compare con una versione candidata, installarlo con:
+
+```bash
+sudo apt install -y fastfetch
+```
+
+Se non è disponibile nei repository della distro, usare il PPA mantenuto dal progetto o il `.deb` dalla pagina [GitHub Releases](https://github.com/fastfetch-cli/fastfetch/releases).
+
+- `fastfetch` mostra le informazioni di sistema (sostituto di neofetch).
+- `htop` è un monitor di processi interattivo.
+- `git` è il sistema di controllo versione.
 
 Per eseguirli:
 
 ```bash
-neofetch
+fastfetch
 htop
 git --version
 ```

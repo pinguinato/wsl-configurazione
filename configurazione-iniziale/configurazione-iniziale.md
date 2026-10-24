@@ -20,7 +20,7 @@ Per lo sviluppo locale utilizzo strumenti come Java, Maven, Python, IntelliJ IDE
 
 ## Licenza Docker Desktop
 
-Docker Desktop è gratuito solo per uso personale; per utilizzo aziendale è richiesta una licenza a pagamento. Se i progetti sono personali, è possibile scaricarlo, installarlo e usarlo liberamente. Verificate sempre i termini di licenza aggiornati sul sito ufficiale prima dell'uso in un contesto commerciale.
+Docker Desktop è gratuito solo per uso personale e per piccole aziende con meno di 250 dipendenti e meno di 10 milioni di dollari USA di fatturato, altrimenti è richiesta una licenza tramite abbonamento. Se i progetti sono personali, è possibile scaricarlo, installarlo e usarlo liberamente. Verificate sempre i termini di licenza aggiornati sul sito ufficiale prima dell'uso in un contesto commerciale.
 
 ## Alternative a Docker Desktop
 
@@ -60,13 +60,13 @@ In alternativa consultare: https://learn.microsoft.com/it-it/windows/wsl/basic-c
     wsl --version              # verifica la versione di WSL installata
     wsl --list --verbose       # lista le distro installate e il loro stato
     wsl --shutdown             # spegne tutte le istanze WSL (applica .wslconfig)
-    wsl --unregister <Nome>    # disinstalla una distro WSL (es. Ubuntu)
+    wsl --unregister <Nome>    # ATTENZIONE: cancella la distro e tutti i suoi dati (fare prima wsl --export)
     wsl --install -d Ubuntu-24.04  # installa una nuova distro (esempio)
     wsl --update               # aggiorna il componente WSL
     wsl --set-default-version 2    # imposta WSL versione 2 come predefinita
     wsl --set-default <nome>   # imposta la distribuzione di default
     wsl --status # controlla configurazione e stato kernel wsl
-    wsl --list --online # mostra elenco distro disponibili per scarimento e installazione
+    wsl --list --online # mostra elenco distro disponibili per scaricamento e installazione
     wsl --terminate <distro-name> # spegne la distro wsl, utile se un processo docker si impalla
     
 
@@ -123,6 +123,7 @@ Remove-Item -Recurse -Force "$env:USERPROFILE\.docker" -ErrorAction SilentlyCont
 
 Note e precauzioni:
 - Eseguite i comandi PowerShell come amministratore. Fate un backup delle directory importanti prima di cancellare.
+- Se la distro contiene dati da conservare, esportatela prima di `wsl --unregister` con `wsl --export <nome> <file.tar>` da PowerShell.
 - Alcuni file di configurazione potrebbero trovarsi in percorsi diversi a seconda della versione o della personalizzazione dell'installazione: verificate prima di cancellare.
 - Per `Rancher Desktop` vale lo stesso approccio: disinstallare l'app e rimuovere eventuali VM/directory residue per evitare conflitti.
 - Dopo la pulizia è consigliato riavviare Windows per assicurarsi che non ci siano servizi in memoria.

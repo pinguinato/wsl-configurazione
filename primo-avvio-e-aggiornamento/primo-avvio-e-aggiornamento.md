@@ -62,4 +62,3 @@ Lo stato tipico quando systemd è operativo è `running`. Altri stati possibili:
 - `wsl --list --verbose` — mostra le distro installate e il loro stato.
 - Se dopo `wsl --shutdown` il cambio a `wsl.conf` non sembra applicarsi, riavviate Windows.
 
-Se vuoi, posso aggiungere: link ufficiali alla documentazione Microsoft su WSL, comandi per configurare `.wslconfig` su Windows, o istruzioni per installare Docker/Podman direttamente nella distro.
