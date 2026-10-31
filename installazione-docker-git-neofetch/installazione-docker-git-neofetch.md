@@ -139,6 +139,16 @@ htop
 git --version
 ```
 
+*Importante*
+
+Se fastfetch non compare tra i pacchetti installabili, io sulla mia Ubuntu Wsl ho fatto questa procedura e ha funzionato:
+
+  ```bash
+  sudo add-apt-repository ppa:zhangsongcui3371/fastfetch
+  sudo apt update
+  sudo apt install -y fastfetch
+  ```
+
 ---
 
 ## Consigli e troubleshooting
